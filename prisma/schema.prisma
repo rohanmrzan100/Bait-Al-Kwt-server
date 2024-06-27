@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  admin
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  avatar    String?   @db.VarChar(1000)
+  role      Role      @default(user)
+  createdAt DateTime  @default(now())
+  Review    Review[]
+  Address   Address[]
+
+  @@map("user")
+}
+
+model Image {
+  id        String  @id @default(uuid())
+  image     String
+  color     String
+  colorCode String
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("image")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  category    String
+  description String   @db.VarChar(10000)
+  inStock     Boolean
+  image       Image[]
+  review      Review[]
+  createdAt   DateTime @default(now())
+
+  @@map("product")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  price     Int
+  comment   String   @db.VarChar(10000)
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("review")
+}
+
+model Address {
+  id            String @id @default(uuid())
+  streetAddress String @db.VarChar(10000)
+
+  city       String
+  postalCode Int
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String
+
+  lat Float
+  lng Float
+
+  @@map("address")
+}
