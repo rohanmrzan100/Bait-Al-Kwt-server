@@ -138,7 +138,7 @@ export const login: RequestHandler<unknown, unknown, loginBody> = async (
         });
 
         res.cookie("token", token, {
-          httpOnly: true,
+          httpOnly: false,
           maxAge: 24 * 60 * 60 * 1000,
         });
         return res.status(200).json({

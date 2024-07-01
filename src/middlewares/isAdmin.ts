@@ -13,6 +13,7 @@ async function IsAdmin(req: Request, res: Response, next: NextFunction) {
   }
 
   const tokenWithoutBearer = token.split(" ")[1];
+  console.log(tokenWithoutBearer);
 
   try {
     const decoded: any = jwt.verify(tokenWithoutBearer, env.SECRET);
