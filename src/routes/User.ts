@@ -18,7 +18,7 @@ router.delete("/delete-all-users", deleteAllUsers);
 
 
 ///protected Routes
-router.post("/create-admin", IsAdmin, CreateAdmin);
+router.post("/create-admin",  CreateAdmin);
 
 
 export default router;

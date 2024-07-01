@@ -1,6 +1,7 @@
 import express from "express";
 import {
   DeleteProduct,
+  EditProduct,
   GetAllProducts,
   GetProductByCategory,
   GetProductByFilter,
@@ -21,5 +22,6 @@ router.post("/filter", GetProductByFilter);
 router.post("/create", IsAdmin, upload.any(), createProduct);
 router.put("/toggle-in-stock", IsAdmin, ToggleStock);
 router.delete("/delete-product", IsAdmin, DeleteProduct);
+router.post("/update-product", IsAdmin, EditProduct);
 
 export default router;

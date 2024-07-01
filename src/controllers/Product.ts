@@ -187,7 +187,7 @@ export const GetProductById: RequestHandler = async (req, res, next) => {
       return res.status(404).json({ msg: "Product not found" });
     }
 
-    res.status(200).json({ msg: "Product Deleted sucessfully !", product });
+    res.status(200).json({ msg: "Product retrived sucessfully !", product });
   } catch (error) {
     next(error);
   }
@@ -269,5 +269,46 @@ export const GetProductByFilter: RequestHandler = async (req, res, next) => {
     res.status(200).json({ msg: "Product Retrieved successfully!", products });
   } catch (error) {
     next(error);
+  }
+};
+
+
+interface EditProductBody {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  inStock: boolean;
+}
+
+export const EditProduct: RequestHandler<
+  unknown,
+  unknown,
+  EditProductBody,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const { id, name, price, description, inStock } =
+      req.body as EditProductBody;
+
+   
+    console.log({ body: req.body });
+
+    const updatedProduct = await prisma.product.update({
+      where: { id },
+      data: {
+        name,
+        price,
+        description,
+        inStock,
+      },
+    });
+
+    console.log("Product updated:", updatedProduct);
+
+    res.status(200).json({ msg: "Product updated successfully!" });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    next(error); // Pass error to the next middleware or error handler
   }
 };
