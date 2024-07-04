@@ -220,6 +220,8 @@ export const GetProductByFilter: RequestHandler = async (req, res, next) => {
   try {
     const { color, category, sort, searchTerm } = req.body;
 
+    console.log({ color, category, sort, searchTerm });
+
     const products = await prisma.product.findMany({
       where: {
         AND: [
@@ -230,14 +232,14 @@ export const GetProductByFilter: RequestHandler = async (req, res, next) => {
                 },
               }
             : {},
-          category?.length
+          category?.length > 0
             ? {
                 category: {
                   in: category,
                 },
               }
             : {},
-          color?.length
+          color?.length > 0
             ? {
                 image: {
                   some: {
@@ -272,7 +274,6 @@ export const GetProductByFilter: RequestHandler = async (req, res, next) => {
   }
 };
 
-
 interface EditProductBody {
   id: string;
   name: string;
@@ -291,7 +292,6 @@ export const EditProduct: RequestHandler<
     const { id, name, price, description, inStock } =
       req.body as EditProductBody;
 
-   
     console.log({ body: req.body });
 
     const updatedProduct = await prisma.product.update({
