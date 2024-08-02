@@ -165,6 +165,7 @@ export const CreateAdmin: RequestHandler<unknown, unknown, loginBody> = async (
 ) => {
   try {
     const { email } = req.body;
+    console.log(email);
     if (!email) {
       return res.status(400).json({ msg: "Please provide all required data" });
     }
