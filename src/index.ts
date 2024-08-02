@@ -25,7 +25,8 @@ if (env.NODE_ENV !== "development") {
 }
 
 const corsOptions = {
-  origin: clienthost,
+  origin: ["http://www.baitalkwt.com", "http://localhost:3000"],
+  optionsSuccessStatus: 200,
   credentials: true,
 };
 app.use(express.static(path.join(__dirname, "../public/assets")));
